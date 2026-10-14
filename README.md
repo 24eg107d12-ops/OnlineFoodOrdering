@@ -1,6 +1,6 @@
 # 🍕 Online Food Ordering System
 
-A full-stack Food Ordering web application built with **Java Spring Boot**, **Spring Data JPA**, **MySQL**, and a responsive **HTML5/CSS3/JavaScript Frontend**.
+A full-stack Food Ordering web application built with **Java Spring Boot**, **Spring Data JPA**, **MySQL**, and a modern **React (Vite) Frontend**.
 
 ---
 
@@ -19,29 +19,36 @@ OnlineFoodOrdering/
 │           │   │   ├── OnlinefooforderingApplication.java  # Main entry point
 │           │   │   ├── DataInitializer.java                # Automatic sample data loader
 │           │   │   ├── HomeController.java                 # Health check endpoint
-│           │   │   ├── model/
-│           │   │   │   ├── Restaurant.java                 # Restaurant entity
-│           │   │   │   ├── FoodItem.java                   # Food / Dish entity
-│           │   │   │   └── Order.java                      # Customer order entity
-│           │   │   ├── repository/
-│           │   │   │   ├── RestaurantRepository.java
-│           │   │   │   ├── FoodItemRepository.java
-│           │   │   │   └── OrderRepository.java
-│           │   │   └── controller/
-│           │   │       ├── RestaurantController.java
-│           │   │       ├── FoodController.java
-│           │   │       └── OrderController.java
+│           │   │   ├── model/                              # Entities (Restaurant, FoodItem, Order, User)
+│           │   │   ├── repository/                         # Spring Data JPA Repositories
+│           │   │   └── controller/                         # REST Controllers
 │           │   └── resources/
 │           │       ├── application.properties             # MySQL & Port 8081 config
-│           │       └── static/                            # Built-in Frontend (served at :8081)
-│           │           ├── index.html
-│           │           ├── styles.css
-│           │           └── app.js
+│           │       └── static/                            # Compiled React frontend (served at :8081)
 │           └── test/
-└── frontend/                                        # Standalone Frontend
-    ├── index.html                                   # FoodExpress Website
-    ├── styles.css                                   # Styling, animations, responsive design
-    └── app.js                                       # Cart, live tracking, REST API calls
+└── frontend/                                        # React Frontend (Vite)
+    ├── package.json                                 # React & Vite dependencies
+    ├── vite.config.js                               # Vite config (proxy to :8081)
+    ├── index.html                                   # HTML root template
+    └── src/
+        ├── main.jsx                                 # React root entry
+        ├── App.jsx                                  # State, search, routing & modals
+        ├── index.css                                # Design system & animations
+        ├── services/api.js                          # REST API client with fallback demo mode
+        ├── data/fallbackData.js                     # Fallback demo restaurant data
+        └── components/                              # Modular React components
+            ├── Navbar.jsx                           # Search bar, auth badge & cart trigger
+            ├── Hero.jsx                             # Promo banner & fast stats
+            ├── CategoryChips.jsx                    # Category filter pills
+            ├── RestaurantCard.jsx                   # Individual restaurant preview
+            ├── RestaurantList.jsx                   # Grid & sorting by rating/name
+            ├── FoodCard.jsx                         # Menu item card with add to cart
+            ├── MenuSection.jsx                      # Restaurant menu & category dishes
+            ├── CartDrawer.jsx                       # Slide-out cart with subtotal/tax
+            ├── CheckoutModal.jsx                    # Checkout form with payment choice
+            ├── OrderSuccessModal.jsx                # Live status order tracking stepper
+            ├── PastOrdersModal.jsx                  # Order history modal
+            └── AuthModal.jsx                        # Sign in & registration modal
 ```
 
 ---
@@ -88,15 +95,27 @@ OnlineFoodOrdering/
 
 ### Step 4: Open the Frontend Website
 
-You can view the frontend in **either of two easy ways**:
+You can run the frontend in **two ways**:
 
-#### Method A: Directly via Spring Boot (Recommended)
-Because the frontend is embedded directly in the backend `static` folder, simply open your browser and visit:
+#### Method A: React Development Server (Recommended for Frontend Dev)
+1. Open a new terminal and navigate to `frontend`:
+   ```cmd
+   cd frontend
+   npm run dev
+   ```
+2. Open your browser at:
+   👉 **[http://localhost:3000](http://localhost:3000)**
+   *(Vite automatically proxies backend API calls to `http://localhost:8081`)*
+
+#### Method B: Directly via Spring Boot
+Because the compiled React app is embedded in `backend/onlinefoofordering/src/main/resources/static`, once your Spring Boot backend is running, you can visit:
 👉 **[http://localhost:8081](http://localhost:8081)**
 
-#### Method B: Standalone Frontend
-1. Open the file `frontend/index.html` in VS Code.
-2. Right-click $\rightarrow$ **Open with Live Server** (or simply double-click `frontend/index.html` in Windows Explorer to open it in Chrome).
+To recompile changes to the backend static folder at any time:
+```cmd
+cd frontend
+npm run build:backend
+```
 
 ---
 

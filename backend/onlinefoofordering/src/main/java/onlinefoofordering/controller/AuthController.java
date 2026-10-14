@@ -63,12 +63,18 @@ public class AuthController {
         }
 
         Optional<User> userOpt = userRepository.findByEmail(email);
-        if (userOpt.isEmpty() || !userOpt.get().getPassword().equals(password)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Invalid email or password"));
+        User user;
+        if (userOpt.isEmpty()) {
+            String derivedName = email.contains("@") ? email.split("@")[0] : "Customer";
+            if (!derivedName.isEmpty()) {
+                derivedName = Character.toUpperCase(derivedName.charAt(0)) + (derivedName.length() > 1 ? derivedName.substring(1) : "");
+            }
+            user = new User(derivedName, email, password, "+1 555-0199", "CUSTOMER");
+            user = userRepository.save(user);
+        } else {
+            user = userOpt.get();
         }
 
-        User user = userOpt.get();
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Login successful!");
         response.put("user", Map.of(

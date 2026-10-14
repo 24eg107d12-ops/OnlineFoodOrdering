@@ -6,5 +6,8 @@ target/
 .vscode/
 *.log
 node_modules/
+dist/
+**/dist/
+frontend-backup/
 .DS_Store
 Thumbs.db
